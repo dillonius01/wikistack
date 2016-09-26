@@ -18,9 +18,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 //nunjucks configuration
-app.engine('html', nunjucks.render);
+var env = nunjucks.configure('views', {noCache: true}); //points all routs to 'views'
 app.set('view engine', 'html');
-var env = nunjucks.configure('views', {noCache: true});
+app.engine('html', nunjucks.render);
+
+
 
 //serve static files
 app.use(express.static(path.join(__dirname, '/public')));
@@ -45,5 +47,5 @@ models.User.sync({})
 
 
 app.get('/', function(req, res){
-	res.render('views/index.html')
+	res.render('index') //don't include /views/, see line 21
 });
