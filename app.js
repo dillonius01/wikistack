@@ -10,6 +10,9 @@ var wikiRouter = require('./routes/wiki')
 var express = require('express');
 var app = express();
 
+//set up morgan logging
+app.use(morgan('combined'));
+
 //importing sequelize
 var models = require('./models/index');
 
@@ -18,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 //nunjucks configuration
-var env = nunjucks.configure('views', {noCache: true}); //points all routs to 'views'
+var env = nunjucks.configure('views', {noCache: true}); //points all routes to 'views'
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
 
@@ -29,10 +32,15 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/wiki', wikiRouter);
 
+app.get('/', function(req, res){
+	res.redirect('/wiki') //don't include /views/, see line 21
+});
 
-// var server = app.listen(3001, function() {
-// 	console.log('listening on port 3001')
-// })
+app.use(function(err, req, res, next){
+	console.error(err);
+	res.status(500).send(err.message);
+});
+
 
 models.User.sync({})
 	.then(function() {
@@ -44,8 +52,3 @@ models.User.sync({})
 		});
 	})
 	.catch(console.error);
-
-
-app.get('/', function(req, res){
-	res.render('index') //don't include /views/, see line 21
-});

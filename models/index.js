@@ -30,7 +30,7 @@ var Page = db.define('page', {
 {
 	getterMethods : {
 		route: function() {
-			return '/wiki/'.concat(this.urlTitle);
+			return '/wiki/' + this.urlTitle;
 		}
 	},
 	hooks: {
