@@ -2,8 +2,9 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var path = require('path');
 var pg = require('pg');
-var hstore = require('pg-hstore'); 
+var hstore = require('pg-hstore');
 var nunjucks = require('nunjucks');
+var wikiRouter = require('./routes/wiki')
 
 //set up express
 var express = require('express');
@@ -12,6 +13,10 @@ var app = express();
 //importing sequelize
 var models = require('./models/index');
 
+// bodyParser
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 //nunjucks configuration
 app.engine('html', nunjucks.render);
 app.set('view engine', 'html');
@@ -19,6 +24,8 @@ var env = nunjucks.configure('views', {noCache: true});
 
 //serve static files
 app.use(express.static(path.join(__dirname, '/public')));
+
+app.use('/wiki', wikiRouter);
 
 
 // var server = app.listen(3001, function() {
