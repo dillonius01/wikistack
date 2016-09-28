@@ -5,6 +5,7 @@ var pg = require('pg');
 var hstore = require('pg-hstore');
 var nunjucks = require('nunjucks');
 var wikiRouter = require('./routes/wiki')
+var usersRouter = require('./routes/users')
 
 //set up express
 var express = require('express');
@@ -15,6 +16,8 @@ app.use(morgan('combined'));
 
 //importing sequelize
 var models = require('./models/index');
+var Page = models.Page;
+var User = models.User;
 
 // bodyParser
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -31,9 +34,10 @@ app.engine('html', nunjucks.render);
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/wiki', wikiRouter);
+app.use('/users', usersRouter);
 
 app.get('/', function(req, res){
-	res.redirect('/wiki') //don't include /views/, see line 21
+	res.redirect('/wiki') //don't include /views/
 });
 
 app.use(function(err, req, res, next){
@@ -42,9 +46,9 @@ app.use(function(err, req, res, next){
 });
 
 
-models.User.sync({})
+User.sync({force: true})
 	.then(function() {
-		return models.Page.sync({})
+		return models.Page.sync({force: true})
 	})
 	.then(function() {
 		app.listen(3001, function() {

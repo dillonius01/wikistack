@@ -25,6 +25,9 @@ var Page = db.define('page', {
 	date: {
 		type: Sequelize.DATE,
 		defaultValue: Sequelize.NOW
+	},
+	tags: {
+		type: Sequelize.ARRAY(Sequelize.STRING)
 	}
 },
 {
@@ -67,6 +70,8 @@ var User = db.define('user', {
 		}
 	}
 });
+
+Page.belongsTo(User, {as: 'author'});
 
 module.exports = {
 	Page: Page,

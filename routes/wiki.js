@@ -19,14 +19,37 @@ router.get('/', function(req, res, next){
 });
 
 router.post('/', function(req, res, next){
-  var page = Page.build(req.body);
+  console.log(req.body)
+    
 
-  // redirect only after save is finished
-  page.save()
-  	.then(function() {
-  		res.redirect(page.route);
-  	})
-  	.catch(next);
+  User.findOrCreate({
+    where:
+      { 
+        name: req.body.authorName,
+        email: req.body.authorEmail
+      }
+    })
+    .spread(function(user, wasCreatedBool) {
+
+      var creatingPage = Page.create({
+        title: req.body.title,
+        content: req.body.content,
+        status: req.body.status,
+        tags: req.body.tags
+      });
+
+      var thenRelatingAuthor = creatingPage.then(function (createdPage) {
+        return createdPage.setAuthor(user)
+      })
+    
+      return thenRelatingAuthor;
+
+    })
+    .then(function(createdPage){
+      res.redirect(createdPage.route)
+    })
+    .catch(next)
+
 });
 
 router.get('/add/', function(req, res, next){
@@ -50,16 +73,19 @@ router.get('/:pageTitle', function(req, res, next){
 			if (page === null) {
 				return next(new Error('Page not found!'))
 			}
-			res.render('wikipage', {
-				page: page
-			});
-		})
-		.catch(next);
-})
 
+      page.getAuthor()
+        .then(function(author) {
 
-// get users => get all users (does not change db)
-// get users/123 => gets specific user (does not change db)
-// post users => creates a user in db
-// put users/123 => updates the db
-// delete users/123 => remove from db
+          page.author = author;
+
+          return res.render('wikipage', {
+            page: page   
+          });
+
+        })
+
+      })
+    .catch(next);
+});
+
