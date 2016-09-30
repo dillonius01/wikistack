@@ -27,10 +27,50 @@ var Page = db.define('page', {
 		defaultValue: Sequelize.NOW
 	},
 	tags: {
-		type: Sequelize.ARRAY(Sequelize.STRING)
+		type: Sequelize.ARRAY(Sequelize.TEXT),
+		set: function(value) {
+			var arrayofTags;
+
+			if (typeof value === 'string') {
+				arrayofTags = value.split(',').map(function(i) {return i.trim()});
+				this.setDataValue('tags', arrayofTags);
+			} else {
+				this.setDataValue('tags', value);
+			}
+
+
+		}
+
 	}
 },
 {
+	classMethods : {
+		findMatchingTags: function(tag) {
+			return Page.findAll({
+				where: {
+					tags: {
+						$overlap: [tag]
+					}
+				}
+			})
+		}
+	},
+
+	instanceMethods : {
+		findSimilar: function(page) {
+			return Page.findAll({
+				where: {
+					tags: {
+						$overlap: this.tags
+					},
+					id: {
+						$ne: this.id
+					}
+				}
+			})
+		}
+	},
+
 	getterMethods : {
 		route: function() {
 			return '/wiki/' + this.urlTitle;

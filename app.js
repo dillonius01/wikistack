@@ -46,9 +46,9 @@ app.use(function(err, req, res, next){
 });
 
 
-User.sync({force: true})
+User.sync({})
 	.then(function() {
-		return models.Page.sync({force: true})
+		return models.Page.sync()
 	})
 	.then(function() {
 		app.listen(3001, function() {

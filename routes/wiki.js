@@ -38,7 +38,9 @@ router.post('/', function(req, res, next){
         tags: req.body.tags
       });
 
+
       var thenRelatingAuthor = creatingPage.then(function (createdPage) {
+        console.log(createdPage.dataValues);
         return createdPage.setAuthor(user)
       })
     
@@ -55,6 +57,28 @@ router.post('/', function(req, res, next){
 router.get('/add/', function(req, res, next){
   res.render('addpage');
 });
+
+router.get('/search', function(req, res, next) {
+  var tag = req.query.searchTag;
+  if (!tag) res.render('search');
+  
+  else {
+
+    var findingPage = Page.findMatchingTags(tag);
+
+    findingPage
+      .then(function(results) {
+        res.render('search', {
+          results: results,
+          tag: tag
+        })
+      })
+      .catch(next)
+  }
+
+})
+
+
 
 router.post('/add/', function(req, res, next){
   res.json(req.body);
@@ -80,7 +104,8 @@ router.get('/:pageTitle', function(req, res, next){
           page.author = author;
 
           return res.render('wikipage', {
-            page: page   
+            page: page,
+            tags: page.tags  
           });
 
         })
@@ -88,4 +113,25 @@ router.get('/:pageTitle', function(req, res, next){
       })
     .catch(next);
 });
+
+router.get('/:pageTitle/similar', function(req, res, next) {
+  var urlTitleOfPage = req.params.pageTitle;
+
+  Page.findOne({
+    where: {
+      urlTitle: urlTitleOfPage
+    }
+  })
+    .then(function(page) {
+      return page.findSimilar();
+    })
+    .then(function(pages) {
+      res.render('index', {
+        pages: pages
+      })
+    })
+    .catch(next)
+  
+
+})
 
