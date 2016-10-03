@@ -28,6 +28,9 @@ var env = nunjucks.configure('views', {noCache: true}); //points all routes to '
 app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
 
+var AutoEscapeExtension = require('nunjucks-autoescape')(nunjucks);
+env.addExtension('AutoEscapeExtension', new AutoEscapeExtension(env));
+
 
 
 //serve static files

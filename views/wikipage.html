@@ -12,7 +12,7 @@
   </div>
   <hr/>
   <div><a href="/users/{{ page.author.id }}">{{ page.author.name}}</a></div>
-  <div class="page-body">{{ page.content }}</div>
+  <div class="page-body">{% autoescape false %}{{ page.renderedContent }}{% endautoescape %}</div>
   <hr/>
   <div><a href="{{ page.route }}/similar">Find Similar</a></div>
 
