@@ -1,21 +1,13 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <h3>{{ page.title }} <small> (<a href="{{ page.urlTitle}}/similar">Similar</a>)</small></h3>
-  <h4>by <a href="/users/{{ page.author.id }}">{{ page.author.name }}</a></h4>
-  <div>
-  	<ul class=list-unstyled>
-  		{% for tag in tags %}
-  		<li class="article-tag"><a href="/wiki/search/?searchTag={{tag}}">{{tag}}</a></li>
-  		{% endfor %}
-  	</ul>
-  </div>
+  <h3>PLACEHOLDER PAGE TITLE <small> (<a href="PLACEHOLDER_URL_TITLE/similar">Similar</a>)</small></h3>
+  <h4>by <a href="PLACEHOLDER-AUTHOR-URL">PLACEHOLDER AUTHOR NAME</a></h4>
+  <div>PLACEHOLDER TAG LIST</div>
   <hr/>
-  <div><a href="/users/{{ page.author.id }}">{{ page.author.name}}</a></div>
-  <div class="page-body">{% autoescape false %}{{ page.renderedContent }}{% endautoescape %}</div>
+  <div>PLACEHOLDER AUTHOR NAME WITH LINK TO AUTHOR PAGE</div>
+  <div class="page-body">PLACEHOLDER PAGE CONTENT</div>
   <hr/>
-  <div><a href="{{ page.route }}/similar">Find Similar</a></div>
-
-  <a href="{{ page.route }}/edit" class="btn btn-primary">edit this page</a>
-  <a href="{{ page.route }}}}/delete" class="btn btn-danger">delete this page</a>
+  <a href="PLACEHOLDER_URL_TITLE/edit" class="btn btn-primary">edit this page</a>
+  <a href="PLACEHOLDER_URL_TITLE/delete" class="btn btn-danger">delete this page</a>
 {% endblock %}
