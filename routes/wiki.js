@@ -4,17 +4,18 @@ const Page = require('../models').Page;
 
 
 router.get('/', (req, res, next) => {
-	res.redirect('/');
-	// Page.findAll()
-	// 	.then(res.json)
-	// 	.catch(next)
+	Page.findAll()
+		.then(pages => {
+			res.render('index', { pages })
+		})
+		.catch(next)
 });
 
 
 router.post('/', (req, res, next) => {
 	Page.create(req.body)
 		.then(page => {
-			res.redirect(`/wiki/${page.urlTitle}`);
+			res.redirect(page.route);
 		})
 		.catch(next);
 });
