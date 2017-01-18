@@ -32,7 +32,7 @@ const Page = db.define('page', {
 	},
 
 	hooks: {
-		beforeCreate: function(page) {
+		beforeValidate: function(page) {
 
 			const makeUrlTitle = title => {
 			  if (title) {

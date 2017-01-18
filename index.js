@@ -45,10 +45,10 @@ app.use((err, req, res, next) => {
 const PORT = 8000;
 
 
-models.Page.sync({force: true})
+models.Page.sync()
 	.then((wat) => {
 		console.log('Synced Pages')
-		return models.User.sync({force: true})
+		return models.User.sync()
 	})
 	.then((foo) => {
 		console.log('Synced Users')

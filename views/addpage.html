@@ -6,7 +6,7 @@
   <form method="POST" action="/wiki/">
     
     <div>
-      <label for="name" class="col-sm-2 control-label">Name</label>
+      <label for="name" class="col-sm-2 control-label">Author</label>
       <div class="col-sm-10">
         <input name="name" type="text" class="form-control"/>
       </div>
@@ -29,10 +29,10 @@
     <div>
       <label for="content" class="col-sm-2 control-label">Content</label>
       <div class="col-sm-10">
-        <input name="content" type="text" class="form-control"/>
+        <textarea class="form-control" rows="5" id="content" name="content"></textarea>
       </div>
     </div>
-    
+
     <div>
       <label for="status" class="col-sm-2 control-label">Status</label>
       <div class="col-sm-10">
