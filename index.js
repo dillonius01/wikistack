@@ -7,6 +7,9 @@ const models = require('./models');
 const app = express();
 
 
+const wikiRouter = require('./routes/wiki');
+
+
 // morgan logging
 app.use(morgan('combined'));
 
@@ -28,18 +31,24 @@ app.set('view engine', 'html');
 app.engine('html', nunjucks.render);
 
 
+app.use('/wiki', wikiRouter);
+
 app.get('/', (req, res) => {
 	res.render('index');
+});
+
+app.use((err, req, res, next) => {
+	res.status(err.status || 500).send(err);
 });
 
 
 const PORT = 8000;
 
 
-models.Page.sync()
+models.Page.sync({force: true})
 	.then((wat) => {
 		console.log('Synced Pages')
-		return models.User.sync()
+		return models.User.sync({force: true})
 	})
 	.then((foo) => {
 		console.log('Synced Users')
