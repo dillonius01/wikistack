@@ -1,25 +1,30 @@
 {
   "name": "wikistack",
   "version": "1.0.0",
-  "description": "",
+  "description": "a stack of wikis",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e html,js,css ./app.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Dillon+Jordan",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dillonius01/wikistack.git"
+  },
+  "keywords": [
+    "wiki",
+    "fullstack",
+    "crud"
+  ],
+  "author": "dillonius+fullstack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dillonius01/wikistack/issues"
+  },
+  "homepage": "https://github.com/dillonius01/wikistack#readme",
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "body-parser": "^1.15.2",
+    "body-parser": "^1.16.0",
     "express": "^4.14.0",
-    "marked": "^0.3.6",
     "morgan": "^1.7.0",
-    "nodemon": "^1.10.2",
-    "nunjucks": "^2.5.2",
-    "path": "^0.12.7",
-    "pg": "^6.1.0",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "^3.24.3"
+    "nunjucks": "^3.0.0"
   }
 }
