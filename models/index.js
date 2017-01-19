@@ -55,13 +55,13 @@ const Page = db.define('page', {
 
 	classMethods: {
 		findByTag: function(tags) {
-			Page.findAll({
+			return Page.findAll({
 				where: {
 					tags: {
-						$overlap: tags.split(' ')
+						$overlap: tags // should be an array
 					}
 				}
-			})
+			});
 		}
 	}
 });
@@ -82,4 +82,4 @@ Page.belongsTo(User, { as: 'author' });
 module.exports = {
 	Page,
 	User
-}
+};

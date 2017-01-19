@@ -9,10 +9,11 @@ router.get('/', (req, res, next) => {
 	if (!req.query.tag) {
 		res.render('tagsearch');
 	} else {
-		Page.findByTag(req.query.tag)
+
+		const tags = req.query.tag.split(' ')
+		Page.findByTag(tags)
 		.then(pages => {
-			console.log('----------WE FOUND PAGES!!!!!', pages);
-			res.json(pages);
+			res.render('tagsearch', { pages });
 		})
 		.catch(next)
 	}
