@@ -55,4 +55,20 @@ router.get('/:urlTitle', (req, res, next) => {
 	.catch(next);
 });
 
+router.get('/:urlTitle/similar', (req, res, next) => {
+	Page.findOne({
+		where: {
+			urlTitle: req.params.urlTitle
+		}
+	})
+	.then(page => {
+		return page.findSimilar();
+	})
+	.then(pages => {
+		res.render('index', { pages });
+	})
+	.catch(next);
+});
+
+
 module.exports = router;

@@ -22,20 +22,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // nunjucks templating
-
-// point nunjucks to the directory containing templates and turn off caching; configure returns an Environment 
-// instance, which we'll want to use to add Markdown support later.
 const env = nunjucks.configure('views', {noCache: true});
-// have res.render work with html files
+const AutoEscapeExtension = require('nunjucks-autoescape')(nunjucks);
+env.addExtension('AutoEscapeExtension', new AutoEscapeExtension(env));
+
 app.set('view engine', 'html');
-// when res.render works with html files, have it use nunjucks to do so
 app.engine('html', nunjucks.render);
 
 
 app.use('/wiki', wikiRouter);
 app.use('/users', usersRouter);
 app.use('/search', searchRouter);
-
 
 
 app.get('/', (req, res) => {

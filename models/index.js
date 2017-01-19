@@ -3,6 +3,8 @@ const db = new Sequelize('postgres://localhost:5432/wikistack', {
 	logging: false
 });
 
+const marked = require('marked');
+
 const Page = db.define('page', {
 	title: {
 		type: Sequelize.STRING,
@@ -31,6 +33,10 @@ const Page = db.define('page', {
 	getterMethods: {
 		route: function() {
 			return '/wiki/' + this.urlTitle;
+		},
+
+		renderedContent: function() {
+			return marked(this.content);
 		}
 	},
 
@@ -63,7 +69,24 @@ const Page = db.define('page', {
 				}
 			});
 		}
+	},
+
+	instanceMethods: {
+		findSimilar: function() {
+			console.log('HIT INSTANCE METHODDDDD')
+			return Page.findAll({
+				where: {
+					tags: {
+						$overlap: this.tags
+					},
+					id: {
+						$not: this.id
+					}
+				}
+			});
+		}
 	}
+
 });
 
 const User = db.define('user', {
