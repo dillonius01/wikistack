@@ -20,6 +20,7 @@ router.post('/', (req, res, next) => {
 		}
 	})
 	.spread((user, createdBool) => {
+		req.body.tags = req.body.tags.split(' ');
 		return Page.create(req.body)
 			.then(page => page.setAuthor(user));
 	})

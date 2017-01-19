@@ -51,8 +51,19 @@ const Page = db.define('page', {
 
 			page.urlTitle = makeUrlTitle(page.title);
 		}
-	}
+	},
 
+	classMethods: {
+		findByTag: function(tags) {
+			Page.findAll({
+				where: {
+					tags: {
+						$overlap: tags.split(' ')
+					}
+				}
+			})
+		}
+	}
 });
 
 const User = db.define('user', {
