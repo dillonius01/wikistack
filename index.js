@@ -8,6 +8,7 @@ const app = express();
 
 
 const wikiRouter = require('./routes/wiki');
+const usersRouter = require('./routes/users');
 
 
 // morgan logging
@@ -32,6 +33,7 @@ app.engine('html', nunjucks.render);
 
 
 app.use('/wiki', wikiRouter);
+app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
 	res.render('index');

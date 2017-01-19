@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const Page = require('../models').Page;
-
+const User = require('../models').User;
 
 router.get('/', (req, res, next) => {
 	Page.findAll()
@@ -13,11 +13,20 @@ router.get('/', (req, res, next) => {
 
 
 router.post('/', (req, res, next) => {
-	Page.create(req.body)
-		.then(page => {
-			res.redirect(page.route);
-		})
-		.catch(next);
+	User.findOrCreate({
+		where: {
+			name: req.body.name,
+			email: req.body.email
+		}
+	})
+	.spread((user, createdBool) => {
+		return Page.create(req.body)
+			.then(page => page.setAuthor(user));
+	})
+	.then(page => {
+		res.redirect(page.route);
+	})
+	.catch(next);
 });
 
 
