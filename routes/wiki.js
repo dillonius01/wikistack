@@ -39,12 +39,19 @@ router.get('/:urlTitle', (req, res, next) => {
 	Page.findOne({
 		where: {
 			urlTitle: req.params.urlTitle
-		}
+		},
+		include: [
+			{model: User, as: 'author'}
+		]
 	})
 	.then(page => {
-		res.render('wikipage', { page })
+		if (page === null) {
+			res.status(404).send();
+		} else {
+			res.render('wikipage', { page });
+		}
 	})
-	.catch(next)
+	.catch(next);
 });
 
 module.exports = router;

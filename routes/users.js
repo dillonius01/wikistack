@@ -30,3 +30,5 @@ router.get('/:userId', (req, res, next) => {
 });
 
 module.exports = router;
+
+// why can't Promise.all work with .spread when given an arrow function as a cb????
